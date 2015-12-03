@@ -20,3 +20,12 @@ Réalisation d'un programme en Java permettant de jouer à l'othello
 Chaque message de commit devra être clair et précis. Il faut donc que chaque commit ait un but clair et précis (et pas faire un commit pour beaucoup de modifications différentes ou l'inverse).
 ### Push et branch
 Chaque étape `n` du TP sera push idéalement dans une branche par étape qu'on prendra ensuite soin de merge à l'étape `n+1`.
+### Formatting
+#### Braces
+Malheureusement, je (Lucile) ne peux pas modifier mon formatting dans Netbeans, ce seront donc des egyptian braces.
+#### Nommage
+- Les méthodes et variables doivent porter un nom le plus explicite possible.
+- Les méthodes privées ET attributs privés doivent être précédés d'un underscore, ça facilite le repérage de leur visibilité lors de la lecture.
+
+#### Documentation
+Toutes les méthodes doivent posséder une javadoc correcte. Des commentaires dans le code sont un plus non négligeable.
