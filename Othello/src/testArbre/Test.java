@@ -145,18 +145,6 @@ public class Test {
         return pere;
     }
 
-    // Pas certain à propos de ça...
-    public static void getFilsByProfondeur(Tree<Info> arbre, int profondeur) {
-        // Liste à retourner.
-        ArrayList<Tree<Info>> listeFils = new ArrayList<>();
-
-        int niveau = 1;
-
-        while (niveau != profondeur) {
-            // TODO
-        }
-    }
-
     /**
      * Affiche en console le titre correspondant à un test
      *
