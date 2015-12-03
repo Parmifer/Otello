@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package otello;
+package othello;
 
 /**
  *
  * @author lucile
  */
-public class Otello {
+public class Othello {
 
     /**
      * @param args the command line arguments
