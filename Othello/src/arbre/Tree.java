@@ -1,5 +1,6 @@
 package arbre;
 
+import java.lang.Math;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  *
  * @param <T> Fixé lors de la création de l'arbre, contenu de chaque noeud de l'arbre
  */
-public class Tree<T> {
+public class Tree<T extends Heuristiquable> {
 
     private T _racine;
     private ArrayList<Tree<T>> _fils;
@@ -108,6 +109,15 @@ public class Tree<T> {
 
     public int getProfondeur() {
         return _profondeur;
+    }
+
+    /**
+     * Renvoie l'heuristique de la racine de l'arbre courant.
+     *
+     * @return int Une valeur numérique entière représentant la valeur d'un coup à jouer.
+     */
+    public int getHeuristique() {
+        return this._racine.getHeuristique();
     }
 
     public ArrayList<Tree<T>> getFils() {

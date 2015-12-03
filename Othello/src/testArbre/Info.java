@@ -1,5 +1,7 @@
 package testArbre;
 
+import arbre.Heuristiquable;
+
 /**
  * Classe pour tester l'implantation d'un arbre Naire générique
  * Cette classe permet de mettre des objets génériques pratiques à afficher 
@@ -8,7 +10,7 @@ package testArbre;
  * @author Anne-lise Courbis - Lucile Decrozant-Triquenaux
  *
  */
-public class Info {
+public class Info implements Heuristiquable {
 
     private int _value;
 
@@ -39,5 +41,10 @@ public class Info {
     public String toString() {
         String valeur = Integer.toString(this.getValue()) + " ";
         return valeur;
+    }
+
+    @Override
+    public int getHeuristique() {
+        return this._value;
     }
 }
