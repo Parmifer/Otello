@@ -17,7 +17,7 @@ public class Test {
     public static void main(String[] args) {
         // Création d'un arbre 3*3 
         // Parcours de celui-ci en profondeur
-        Test.afficherTitre(1, 3, 3);
+        Test._afficherTitre(1, 3, 3);
         Tree<Info> monArbre = genererArbreInfo(3, 3);
         System.out.println("----- deepthSearch() ------");
         System.out.println("---- Résultat attendu -----");
@@ -27,7 +27,7 @@ public class Test {
 
         // Création d'un arbre 5*2
         // Parcours de celui-ci en profondeur
-        Test.afficherTitre(2, 5, 2);
+        Test._afficherTitre(2, 5, 2);
         Tree<Info> monArbre2 = genererArbreInfo(5, 2);
         System.out.println("----- deepthSearch() ------");
         System.out.println("---- Résultat attendu -----");
@@ -37,7 +37,7 @@ public class Test {
 
         // Création d'un arbre 4*2
         // Parcours de celui-ci en largeur
-        Test.afficherTitre(3, 3, 2);
+        Test._afficherTitre(3, 3, 2);
         Tree<Info> monArbre3 = genererArbreInfo(3, 5);
         System.out.println("------ widthSearch() ------");
         System.out.println("---- Résultat attendu -----");
@@ -97,7 +97,6 @@ public class Test {
         return pere;
     }
 
-
     // Pas certain à propos de ça...
     public static void getFilsByProfondeur(Tree<Info> arbre, int profondeur) {
         // Liste à retourner.
@@ -117,7 +116,7 @@ public class Test {
      * @param largeur Largeur de l'arbre créé pourle test
      * @param profondeur Profondeur de l'arbre créé pour le test
      */
-    private static void afficherTitre(int numero, int largeur, int profondeur) {
+    private static void _afficherTitre(int numero, int largeur, int profondeur) {
         System.out.println("");
         System.out.println("");
         System.out.println("******************************************************");

@@ -11,21 +11,21 @@ import java.util.ArrayList;
  */
 public class Tree<T> {
 
-    private T racine;
-    private ArrayList<Tree<T>> fils;
-    private Tree<T> pere;
-    private int largeur;
-    private int profondeur;
+    private T _racine;
+    private ArrayList<Tree<T>> _fils;
+    private Tree<T> _pere;
+    private int _largeur;
+    private int _profondeur;
 
     /**
      * Crée d'un arbre vide
      */
     public Tree() {
-        this.racine = null;
-        this.pere = null;
-        this.fils = new ArrayList<>();
-        this.largeur = 0;
-        this.profondeur = 0;
+        this._racine = null;
+        this._pere = null;
+        this._fils = new ArrayList<>();
+        this._largeur = 0;
+        this._profondeur = 0;
     }
 
     /**
@@ -36,11 +36,11 @@ public class Tree<T> {
      * @param largeur Largeur de l'arbre
      */
     public Tree(T noeudRacine, int profondeur, int largeur) {
-        this.racine = noeudRacine;
-        this.pere = null;
-        this.fils = new ArrayList<>();
-        this.largeur = largeur;
-        this.profondeur = profondeur;
+        this._racine = noeudRacine;
+        this._pere = null;
+        this._fils = new ArrayList<>();
+        this._largeur = largeur;
+        this._profondeur = profondeur;
     }
 
     /**
@@ -50,9 +50,9 @@ public class Tree<T> {
      * @param arbrePere
      */
     public Tree(T noeudRacine, Tree<T> arbrePere) {
-        this.racine = noeudRacine;
-        this.pere = arbrePere;
-        this.fils = new ArrayList<>();
+        this._racine = noeudRacine;
+        this._pere = arbrePere;
+        this._fils = new ArrayList<>();
     }
 
     /**
@@ -61,7 +61,7 @@ public class Tree<T> {
      * @param noeudRacine
      */
     public void setRacine(T noeudRacine) {
-        this.racine = noeudRacine;
+        this._racine = noeudRacine;
     }
 
     /**
@@ -70,7 +70,7 @@ public class Tree<T> {
      * @return Le noeud racine
      */
     public T getRacine() {
-        return this.racine;
+        return this._racine;
     }
 
     /**
@@ -80,7 +80,7 @@ public class Tree<T> {
      */
     public void addFils(T noeudFils) {
         Tree<T> arbreFils = new Tree<>(noeudFils, this);
-        this.fils.add(arbreFils);
+        this._fils.add(arbreFils);
     }
 
     /**
@@ -90,28 +90,28 @@ public class Tree<T> {
      * @return Tree<> Le noeud corespondant à l'index
      */
     public Tree<T> getFils(int indexFils) {
-        return this.fils.get(indexFils);
+        return this._fils.get(indexFils);
     }
 
     /**
-     * Retourne le nombre de fils à l'arbre
+     * Retourne le nombre de fils appartenants à l'arbre
      *
      * @return int Nombre de fils existants dan l'arbre
      */
     public int getNbFils() {
-        return this.fils.size();
+        return this._fils.size();
     }
 
     public int getLargeur() {
-        return largeur;
+        return _largeur;
     }
 
     public int getProfondeur() {
-        return profondeur;
+        return _profondeur;
     }
 
     public ArrayList<Tree<T>> getFils() {
-        return fils;
+        return _fils;
     }
 
     /**
@@ -129,7 +129,7 @@ public class Tree<T> {
      * @return Tree<> Le noeud père
      */
     public Tree<T> getPere() {
-        return this.pere;
+        return this._pere;
     }
 
     /**
@@ -139,7 +139,7 @@ public class Tree<T> {
         // Affichage de la valeur contenue dans le noeud
         System.out.print(this.getRacine());
         int nombreDeFils = this.getNbFils();
-        // On parcourt les fils en profondeur
+        // On parcourt les _fils en _profondeur
         for (int i = 0; i < nombreDeFils; i++) {
             this.getFils(i).deepthSearch();
         }

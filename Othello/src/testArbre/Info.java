@@ -10,29 +10,29 @@ package testArbre;
  */
 public class Info {
 
-    private int value;
+    private int _value;
 
     public Info(int val) {
-        value = val;
+        _value = val;
     }
 
     public Info() {
-        value = -1;
+        _value = -1;
     }
 
     public void setValue(int val) {
-        value = val;
+        _value = val;
     }
 
     public int getValue() {
-        return value;
+        return _value;
     }
 
     /**
      * Affiche en console la valeur de l'objet
      */
     public void imprim() {
-        System.out.print(value + " ");
+        System.out.print(_value + " ");
     }
     
     @Override
