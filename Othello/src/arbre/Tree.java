@@ -168,15 +168,4 @@ public class Tree<T> {
             }
         } while (!noeudsReorganises.isEmpty());
     }
-
-    private ArrayList<T> rechercheLesFils() {
-        ArrayList<T> arbreFils = new ArrayList();
-
-        for (int j = 0; j < this.getNbFils(); j++) {
-            Tree<T> thefils = this.getFils(j);
-            arbreFils.add(thefils.getRacine());
-            thefils.rechercheLesFils();
-        }
-        return arbreFils;
-    }
 }
