@@ -46,6 +46,54 @@ public class Test {
         monArbre3.widthSearch();
     }
 
+    private static int _maxiVal(Tree<Info> arbre) {
+        int heuristique = 0;
+
+        if (arbre.isFeuille()) {
+            heuristique = arbre.getRacine().getValue();
+        } else {
+            int nombreDeFils = arbre.getNbFils();
+            for (int i = 0; i < nombreDeFils; i++) {
+                heuristique = Math.max(heuristique, _miniVal(arbre.getFils(i)));
+            }
+        }
+
+        return heuristique;
+    }
+
+    private static int _miniVal(Tree<Info> arbre) {
+        int heuristique = 0;
+
+        if (arbre.isFeuille()) {
+            heuristique = arbre.getRacine().getValue();
+        } else {
+            int nombreDeFils = arbre.getNbFils();
+            for (int i = 0; i < nombreDeFils; i++) {
+                heuristique = Math.min(heuristique, _maxiVal(arbre.getFils(i)));
+            }
+        }
+
+        return heuristique;
+    }
+
+    public static Tree<Info> minMax(Tree<Info> arbre) {
+        int heuristique = 0;
+
+        int nombreDeFils = arbre.getNbFils();
+        for (int i = 0; i < nombreDeFils; i++) {
+            heuristique = Math.max(heuristique, _maxiVal(arbre.getFils(i)));
+        }
+
+        Tree<Info> noeudARetourner;
+        int indexFils = 0;
+        do {
+            noeudARetourner = arbre.getFils(indexFils++);
+        } while (indexFils < nombreDeFils && heuristique != noeudARetourner.getRacine().getValue());
+        noeudARetourner.getRacine().imprim();
+
+        return noeudARetourner;
+    }
+
     /**
      * Génère un arbre à partir de la racine
      *
