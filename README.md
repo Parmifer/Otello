@@ -24,8 +24,7 @@ Chaque étape `n` du TP sera push idéalement dans une branche par étape qu'on 
 #### Braces
 Malheureusement, je (Lucile) ne peux pas modifier mon formatting dans Netbeans, ce seront donc des egyptian braces.
 #### Nommage
-- Les méthodes et variables doivent porter un nom le plus explicite possible.
-- Les méthodes privées ET attributs privés doivent être précédés d'un underscore, ça facilite le repérage de leur visibilité lors de la lecture.
-
+* Les méthodes et variables doivent porter un nom le plus explicite possible.
+* Les méthodes privées ET attributs privés doivent être précédés d'un underscore, ça facilite le repérage de leur visibilité lors de la lecture.
 #### Documentation
 Toutes les méthodes doivent posséder une javadoc correcte. Des commentaires dans le code sont un plus non négligeable.
