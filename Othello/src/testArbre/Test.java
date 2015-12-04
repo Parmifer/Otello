@@ -1,13 +1,15 @@
 package testArbre;
 
 import arbre.Tree;
-import java.util.ArrayList;
 
 /**
  *
  * @author Yann Butscher - Lucile Decrozant-Triquenaux
  */
 public class Test {
+
+    static int minPrises = 1;
+    static int maxPrises = 15;
 
     /**
      * Programme de test, se lance et va afficher les différents essais des classes et méthodes du projet
@@ -37,13 +39,25 @@ public class Test {
 
         // Création d'un arbre 4*2
         // Parcours de celui-ci en largeur
-        Test._afficherTitre(3, 3, 2);
-        Tree<Info> monArbre3 = genererArbreInfo(3, 5);
+        Test._afficherTitre(3, 4, 2);
+        Tree<Info> monArbre3 = genererArbreInfo(4, 2);
         System.out.println("------ widthSearch() ------");
         System.out.println("---- Résultat attendu -----");
-        System.out.println("1 10 11 100 101 110 111");
+        System.out.println("1 10 11 100 101 110 111 1000 1001 1010 1011 1100 1101 1110 1111");
         System.out.println("---- Résultat obtenu ------");
         monArbre3.widthSearch();
+
+        // Création d'un arbre random 4*3
+        // Parcours de celui-ci en profondeur puis en largeur
+        Test._afficherTitre(4, 4, 3);
+        Tree<Info> monArbre4 = genererArbreInfoRandom(4, 3);
+        System.out.println("----- deepthSearch() ------");
+        System.out.println("---- Résultat obtenu ------");
+        monArbre4.deepthSearch();
+        System.out.println("");
+        System.out.println("------ widthSearch() ------");
+        System.out.println("---- Résultat obtenu ------");
+        monArbre4.widthSearch();
     }
 
     private static int _maxiVal(Tree<Info> arbre) {
@@ -120,6 +134,32 @@ public class Test {
     }
 
     /**
+     * Génère un arbre à partir de la racine en le remplissant avec des nombres aléatoires
+     *
+     * @param profondeur Profondeur de l'arbre désirée
+     * @param largeur Largeur de l'arbre désirée
+     * @return L'arbre généré
+     */
+    public static Tree<Info> genererArbreInfoRandom(int profondeur, int largeur) {
+        // En cas de profondeur 0, on retourne un arbre vide
+        if (profondeur < 1) {
+            return new Tree<>();
+        } else {
+            // On génère la racine à partir d'un nombre aléatoire
+            int nombreAleatoire = Test.minPrises + (int) (Math.random() * ((Test.maxPrises - Test.minPrises) + Test.minPrises));
+            Info racine = new Info(nombreAleatoire);
+            Tree<Info> arbreRacine = new Tree<>(racine, profondeur, largeur);
+
+            // Si la profondeur est supérieure à 1, on va créer des fils à l'arbre
+            if (profondeur > 1) {
+                arbreRacine = genererArbreFilsInfoRandom(profondeur - 1, largeur, arbreRacine);
+            }
+
+            return arbreRacine;
+        }
+    }
+
+    /**
      * Génère un fils dans un arbre existant
      *
      * @param profondeur Profondeur de l'arbre désirée
@@ -139,6 +179,33 @@ public class Test {
             if (profondeur > 1) {
                 Tree<Info> nouvelArbreFils = pere.getFils(i);
                 genererArbreFilsInfo(profondeur - 1, largeur, nouvelArbreFils);
+            }
+        }
+
+        return pere;
+    }
+
+    /**
+     * Génère un fils dans un arbre existant, contenant des nombres aléatoires
+     *
+     * @param profondeur Profondeur de l'arbre désirée
+     * @param largeur Largeur de l'arbre désirée
+     * @param pere Père de l'arbre que l'on souhaite générer
+     * @return L'arbre père modifié avec le nouvel arbre fils
+     */
+    public static Tree<Info> genererArbreFilsInfoRandom(int profondeur, int largeur, Tree<Info> pere) {
+        // Pour chaque branche définie par largeur, on va créer un arbre fils
+        for (int i = 0; i < largeur; i++) {
+            // Création d'un fils
+            int nombreAleatoire = Test.minPrises + (int) (Math.random() * ((Test.maxPrises - Test.minPrises) + Test.minPrises));
+            Info nouveauNoeudFils = new Info(nombreAleatoire);
+            pere.addFils(nouveauNoeudFils);
+
+            // Si la profondeur est supérieure à 1, 
+            // on génère un nouveau fils dans l'arbre qui vient tout juste d'être créé
+            if (profondeur > 1) {
+                Tree<Info> nouvelArbreFils = pere.getFils(i);
+                genererArbreFilsInfoRandom(profondeur - 1, largeur, nouvelArbreFils);
             }
         }
 
