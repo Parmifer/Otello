@@ -1,6 +1,6 @@
 package testArbre;
 
-import Modele.arbre.Heuristiquable;
+import arbre.Heuristiquable;
 
 /**
  * Classe pour tester l'implantation d'un arbre Naire générique

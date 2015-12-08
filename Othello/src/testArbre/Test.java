@@ -1,6 +1,6 @@
 package testArbre;
 
-import Modele.arbre.Tree;
+import arbre.Tree;
 
 /**
  *

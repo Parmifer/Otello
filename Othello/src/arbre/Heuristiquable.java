@@ -1,4 +1,4 @@
-package Modele.arbre;
+package arbre;
 
 /**
  *
