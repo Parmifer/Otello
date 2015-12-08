@@ -1,4 +1,4 @@
-package arbre;
+package Modele.arbre;
 
 import java.lang.Math;
 import java.util.ArrayList;
