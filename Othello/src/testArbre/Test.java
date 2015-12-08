@@ -58,10 +58,21 @@ public class Test {
         System.out.println("------ widthSearch() ------");
         System.out.println("---- Résultat obtenu ------");
         monArbre4.widthSearch();
+        
+        // Création d'un arbre random 4*3
+        // Parcours de celui-ci en profondeur puis en largeur
+        Test._afficherTitre(5, 3, 3);
+        Tree<Info> monArbre5 = genererArbreInfoRandom(3, 3);
+        System.out.println("----- deepthSearch() ------");
+        System.out.println("---- Résultat obtenu ------");
+        monArbre5.deepthSearch();
+        System.out.println("-----     minMax()   ------");
+        System.out.println("---- Résultat obtenu ------");
+        minMax(monArbre5);       
     }
 
     private static int _maxiVal(Tree<Info> arbre) {
-        int heuristique = 0;
+        int heuristique = Integer.MIN_VALUE;
 
         if (arbre.isFeuille()) {
             heuristique = arbre.getRacine().getValue();
@@ -76,7 +87,7 @@ public class Test {
     }
 
     private static int _miniVal(Tree<Info> arbre) {
-        int heuristique = 0;
+        int heuristique = Integer.MAX_VALUE;
 
         if (arbre.isFeuille()) {
             heuristique = arbre.getRacine().getValue();
@@ -91,18 +102,24 @@ public class Test {
     }
 
     public static Tree<Info> minMax(Tree<Info> arbre) {
-        int heuristique = 0;
+        int heuristique = Integer.MIN_VALUE;
+        int indexFils = 0;
 
         int nombreDeFils = arbre.getNbFils();
-        for (int i = 0; i < nombreDeFils; i++) {
-            heuristique = Math.max(heuristique, _maxiVal(arbre.getFils(i)));
+        for (int i = 0; i < nombreDeFils; i++)
+        {
+            int miniVal = _miniVal(arbre.getFils(i));
+            // System.out.println("miniVal = " + miniVal);
+            if(heuristique > miniVal)
+            {
+                heuristique = miniVal;
+                indexFils = i;
+            }            
         }
 
         Tree<Info> noeudARetourner;
-        int indexFils = 0;
-        do {
-            noeudARetourner = arbre.getFils(indexFils++);
-        } while (indexFils < nombreDeFils && heuristique != noeudARetourner.getRacine().getValue());
+
+        noeudARetourner = arbre.getFils(indexFils);
         noeudARetourner.getRacine().imprim();
 
         return noeudARetourner;
