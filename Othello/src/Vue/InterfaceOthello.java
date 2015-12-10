@@ -2,7 +2,6 @@ package Vue;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.net.URL;
 import java.util.Observable;
@@ -15,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Modele.Couleur;
+import Modele.Joueur;
 import Modele.Plateau;
 
 /**
@@ -92,7 +92,7 @@ public class InterfaceOthello extends JFrame implements Observer {
 			}
 		}
 	
-		quiJoue = new JLabel();
+		quiJoue = new JLabel("NOIR peux jouer.");
 		menu.add(quiJoue);
 
 		if (isJoueurAutomatique)
@@ -170,14 +170,21 @@ public class InterfaceOthello extends JFrame implements Observer {
 	}
 	
 	/**
-	 * initialisation de la zone d'information sur le joueur qui doit jouer
+	 * Initialisation de la zone d'information sur le joueur qui doit jouer
 	 * ou sur le joueur qui doit passer son tour
 	 */
-	public void setTour(){
-			// TODO
-			// ex1:  quiJoue.setText("NOIR doit passer son tour");
-			// ex2:  quiJoue.setText("BLANC doit jouer");
-		
+	public void setTour()
+        {
+            Joueur prochainJoueur = plateau.changeTourJoueur();
+            String couleurJoueurActif = (plateau.aQuiLeTour().getCouleur() == Couleur.NOIR) ? "NOIR" : "BLANC";
+            if(prochainJoueur == null)
+            {
+                quiJoue.setText(couleurJoueurActif + " doit passer son tour.");
+            }
+            else
+            {
+                quiJoue.setText(couleurJoueurActif + " peux jouer.");
+            }
 	}
 	
 
@@ -194,7 +201,6 @@ public class InterfaceOthello extends JFrame implements Observer {
 	 * @return JButton
 	 */
 	public JButton getBoutonReset() {
-		
 		return reset;
 	}
 	/**

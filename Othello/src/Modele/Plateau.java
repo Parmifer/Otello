@@ -1,9 +1,11 @@
 package Modele;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 
 /**
- * classe Plateau qui regroupe: (1) le plateau du jeu (matrice de Couleurs) (2)
+ * classe Plateau qui regroupe: (1) le matrice du jeu (matrice de Couleurs) (2)
  * les liens vers les joueurs (3) la validation du coup demandé (4) le
  * retournement des pions (5) la détection de la fin de partie (aucun des 2
  * joueurs ne peut jouer) (6) le calcul du joueur actif
@@ -13,35 +15,35 @@ import java.util.Observable;
  */
 public class Plateau extends Observable {
 
-    private Couleur[][] plateau; 				// plateau de jeu
+    private Couleur[][] matrice; 				// matrice de jeu
     private int nbblancs; 	 					// nombre de blancs présents
     private int nbnoirs; 	  					// nombre de noirs présents 
-    private int dim;		 					// dimension du plateau
+    private int dim;		 					// dimension du matrice
     private Joueur joueurActif; 				// joueur qui doit jouer
     private Joueur joueurEnAttente;				// joueur en attente de jouer
     private boolean finDePartie = false;			// gestion de la fin de partie quand aucun des joueurs ne peut jouer
     private boolean passeSonTour = false;			// gestion du tour quand un joueur est obligé de passer son tour
 
     /**
-     * création d'un plateau de dimension donnée
+     * création d'un matrice de dimension donnée
      *
-     * @param d dimension du plateau (d doit être paire)
+     * @param d dimension du matrice (d doit être paire)
      */
     public Plateau(int d) {
 
         dim = d;
-        plateau = new Couleur[dim][dim];
+        matrice = new Couleur[dim][dim];
         int milieu = d / 2;
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                plateau[i][j] = Couleur.VIDE;
+                matrice[i][j] = Couleur.VIDE;
             }
         }
 
-        plateau[milieu - 1][milieu - 1] = Couleur.BLANC;
-        plateau[milieu][milieu] = Couleur.BLANC;
-        plateau[milieu][milieu - 1] = Couleur.NOIR;
-        plateau[milieu - 1][milieu] = Couleur.NOIR;
+        matrice[milieu - 1][milieu - 1] = Couleur.BLANC;
+        matrice[milieu][milieu] = Couleur.BLANC;
+        matrice[milieu][milieu - 1] = Couleur.NOIR;
+        matrice[milieu - 1][milieu] = Couleur.NOIR;
 
         nbblancs = 2;
         nbnoirs = 2;
@@ -51,20 +53,19 @@ public class Plateau extends Observable {
     }
 
     /**
-     * initialisation en début de partie du joueur actif (pions noirs) et du
+     * Initialisation en début de partie du joueur actif (pions noirs) et du
      * joueur en attente (pions blancs)
      *
      * @param j1 joueur
      * @param j2 joueur
      */
     public void setJoueurActif(Joueur j1, Joueur j2) {
-        // TODO
-        // exemple :
         joueurActif = j1;
+        joueurEnAttente = j2;
     }
 
     /**
-     * accesseur dà la dimension du plateau
+     * accesseur dà la dimension du matrice
      *
      * @return dint
      */
@@ -73,16 +74,16 @@ public class Plateau extends Observable {
     }
 
     /**
-     * accesseur à la matrice représentant le plateau de jeu
+     * accesseur à la matrice représentant le matrice de jeu
      *
      * @return Couleur[][]
      */
     public Couleur[][] getMatrice() {
-        return plateau;
+        return matrice;
     }
 
     /**
-     * nombre de pions blancs présents sur le plateau
+     * nombre de pions blancs présents sur le matrice
      *
      * @return int
      */
@@ -91,7 +92,7 @@ public class Plateau extends Observable {
     }
 
     /**
-     * acesseur nombre de pions noirs présents sur le plateau
+     * acesseur nombre de pions noirs présents sur le matrice
      *
      * @return int
      */
@@ -118,22 +119,22 @@ public class Plateau extends Observable {
     }
 
     /**
-     * réinitialisation du plateau
+     * réinitialisation du matrice
      */
     public void reset() {
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                plateau[i][j] = Couleur.VIDE;
+                matrice[i][j] = Couleur.VIDE;
             }
         }
-        int milieu = dim / 2;        
-     
-        plateau[milieu - 1][milieu - 1] = Couleur.BLANC;    
-        plateau[milieu][milieu] = Couleur.BLANC;
+        int milieu = dim / 2;
 
-        plateau[milieu][milieu - 1] = Couleur.NOIR;
-        plateau[milieu - 1][milieu] = Couleur.NOIR;     
-        
+        matrice[milieu - 1][milieu - 1] = Couleur.BLANC;
+        matrice[milieu][milieu] = Couleur.BLANC;
+
+        matrice[milieu][milieu - 1] = Couleur.NOIR;
+        matrice[milieu - 1][milieu] = Couleur.NOIR;
+
         nbblancs = 2;
         nbnoirs = 2;
 
@@ -144,16 +145,16 @@ public class Plateau extends Observable {
     }
 
     /**
-     * initialisation d'une cellule du plateau
+     * initialisation d'une cellule du matrice
      *
      * @param lig numéro de ligne
      * @param col numéro de colonne
      * @param couleur couleur du pion
      */
     public void setValue(int lig, int col, Couleur couleur) {
-        Couleur lastCouleur = plateau[lig][col];
-        plateau[lig][col] = couleur;
-        //System.out.println("mise a jour du plateau en " + lig + " - " + col);
+        Couleur lastCouleur = matrice[lig][col];
+        matrice[lig][col] = couleur;
+        //System.out.println("mise a jour du matrice en " + lig + " - " + col);
         if (couleur == Couleur.BLANC) {
             nbblancs++;
             if (lastCouleur == Couleur.NOIR) {
@@ -171,14 +172,24 @@ public class Plateau extends Observable {
     }
 
     /**
-     * vérifie si le coup demandé est valide
+     * Vérifie si le coup demandé est valide
      *
      * @param coup à vérifier
      * @return boolean
      */
     public boolean coupDemande(Coup coup) {
-        // joueurActif.getListeCoupsPossibles();
-        return true;
+        boolean estValide = false;
+
+        ArrayList<Coup> coupsPossibles = joueurActif.getListeCoupsPossibles();
+        for (Iterator<Coup> i = coupsPossibles.iterator(); i.hasNext();) {
+            Coup unCoup = i.next();
+            if (coup.getColonne() == unCoup.getColonne() && coup.getLigne() == unCoup.getLigne())
+            {
+                estValide = true;
+            }
+        }
+
+        return estValide;
     }
 
     /**
@@ -192,16 +203,41 @@ public class Plateau extends Observable {
     }
 
     /**
-     * changement du joueur actif en fonction des coups possibles; si plus de
-     * coups possibles, la fonction retourne null
+     * Changement du joueur actif en fonction des coups possibles.
+     * S'il n'y a plus de coups possibles, la fonction retourne null.
      *
-     * @return Joueur
+     * @return Joueur Le joueur qui va devoir jouer.
      */
     public Joueur changeTourJoueur() {
+        // Si le prochain joueur peut jouer.
+        if (joueurEnAttente.getListeCoupsPossibles().size() > 0)
+        {
+            // On échange les deux joueurs
+            Joueur tmp = joueurEnAttente;
+            joueurEnAttente = joueurActif;
+            joueurActif = tmp;
 
-        //TODO
-        return joueurActif;
-
+            return joueurActif;
+        } 
+        else 
+        {
+            return null;
+        }
     }
 
+    /**
+     * Retire tous les HIGHLIGHT de la matrice.
+     */
+    public void retirerHighlight() {
+        // On parcours les abscisses
+        for (int i = 0; i < dim; i++) {
+            // Puis les ordonnées
+            for (int j = 0; j < dim; j++) {
+                // Si la case parcourrue est un HIGHLIGHT...
+                if (matrice[i][j] == Couleur.HIGHLIGHT) {
+                    setValue(i, j, Couleur.VIDE);
+                }
+            }
+        }
+    }
 }

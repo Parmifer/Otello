@@ -96,9 +96,9 @@ public class Joueur {
     }
 
     /**
-     * calcul des coups possibles du joueur
+     * Calcul des coups possibles du joueur
      *
-     * @return ArrayList<Coup>
+     * @return ArrayList<Coup> La liste des coups possibles pour le joueur.
      */
     public ArrayList<Coup> getListeCoupsPossibles() {
         // Initialisation de l'ArrayList à retourner
@@ -123,8 +123,7 @@ public class Joueur {
                         {
                             // On regarde si un des cases adjacentes possède un pion de la couleur de mon adversaire.
                             if(matriceDuJeu[i+translationHorizontale][j+translationVerticale] == this.couleurAdverse)
-                            {
-                                System.out.println("Pion adverse en : (" + (i + translationHorizontale) + ";" + (j + translationVerticale) + ")");
+                            {                                
                                 // On cherche combien de pions on peux retourner.
                                 int pionRetournePossible = 1;
                                 int abscisse = i + translationHorizontale * (pionRetournePossible + 1);
@@ -157,13 +156,16 @@ public class Joueur {
      *
      * @return Coup
      */
-    public Coup joue() {
-        // TODO
-        // exemple :    
-       
-        Coup coup = new Coup(0, 0);
+    public Coup joue()
+    {
+        // Récupération des coups possibles.
+        ArrayList<Coup> coupsPossibles = getListeCoupsPossibles();
+        
+        // Index d'un coup possible tiré au hasard.      
+        int indexAleatoire = (int) (Math.random() * (coupsPossibles.size() - 1));
+        Coup coup = coupsPossibles.get(indexAleatoire);
+        
         return coup;
-
     }
 
 }

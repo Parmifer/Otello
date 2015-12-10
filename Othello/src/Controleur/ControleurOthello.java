@@ -25,13 +25,17 @@ import java.util.Iterator;
  *
  */
 public class ControleurOthello implements ActionListener {
-    //modèle
-
+    
+    // Modèle
     Plateau plateau;
     Joueur joueur1;
     Joueur joueur2;
-    // vue
+    
+    // Vue
     InterfaceOthello ihm;
+    
+    // Controleur
+    int nombreDeClicBoutonAuto;
 
     /**
      * initialisation du controleur par des liens sur le modèle ( les joueurs et
@@ -47,7 +51,7 @@ public class ControleurOthello implements ActionListener {
         joueur1 = j1;
         joueur2 = j2;
         ihm = vue;
-
+        nombreDeClicBoutonAuto = 1;
     }
 
     /**
@@ -55,39 +59,77 @@ public class ControleurOthello implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        if (e.getSource() == ihm.getBoutonReset()) {
+        
+        // Si clic sur le bouton Reset
+        if (e.getSource() == ihm.getBoutonReset())
+        {
             // Réinitialisation de la partie
             this.plateau.reset();
+            this.nombreDeClicBoutonAuto = 1;
 
-        } // JOUEUR BOT
-        else if (e.getSource() == ihm.getBoutonJoueurAuto() && plateau.aQuiLeTour().isAutomate()) {
-            // Gestion des actions du joueur automatique : 
-            // 1ère sollicitation : Affichage des coups possibles (avec pions de type HIGHLIGHT)
-            ArrayList<Coup> coupsPossibles = plateau.aQuiLeTour().getListeCoupsPossibles();
-            for (Iterator<Coup> i = coupsPossibles.iterator(); i.hasNext();) {
-                Coup unCoup = i.next();
-                plateau.setValue(unCoup.getLigne(), unCoup.getColonne(), Couleur.HIGHLIGHT);
+        } 
+        // JOUEUR BOT
+        // Gestion des actions du joueur automatique   
+        else if (e.getSource() == ihm.getBoutonJoueurAuto() && plateau.aQuiLeTour().isAutomate())
+        {                    
+            // Première sollicitation : Affichage des coups possibles (avec pions de type HIGHLIGHT)
+            if(nombreDeClicBoutonAuto == 1)
+            {
+                ArrayList<Coup> coupsPossibles = plateau.aQuiLeTour().getListeCoupsPossibles();
+                for (Iterator<Coup> i = coupsPossibles.iterator(); i.hasNext();)
+                {
+                    Coup unCoup = i.next();
+                    plateau.setValue(unCoup.getLigne(), unCoup.getColonne(), Couleur.HIGHLIGHT);
+                }
+                nombreDeClicBoutonAuto++;
             }
-            // 2ème sollicitation : affichage du coup demandé par le joueur automatique et retournement des pions du plateau si le coup demandé est valide,
-            // sinon, affichage message d'erreur
-
-            // TO DO
-            // exemple :
-//            Coup coup = plateau.aQuiLeTour().joue();
-//            plateau.setValue(coup.getLigne(), coup.getColonne(), Couleur.NOIR);
-        } // JOUEUR HUMAIN
+            // Deuxième sollicitation : 
+            else if(nombreDeClicBoutonAuto == 2)
+            {
+                // On enlève les highlight.
+                plateau.retirerHighlight();
+                // Affichage du coup demandé par le joueur automatique  
+                Coup coupAleatoire = plateau.aQuiLeTour().joue();                
+                plateau.setValue(coupAleatoire.getLigne(), coupAleatoire.getColonne(), plateau.aQuiLeTour().getCouleur());                
+                // Retournement des pions du plateau si le coup demandé est valide
+                    // TODO
+                    
+                // Sinon, affichage d'un message d'erreur
+                    // TODO
+                    
+                // Reset de la boucle de clic.
+                nombreDeClicBoutonAuto = 1;
+                
+                // Changement de joueur
+                ihm.setTour();
+            }
+        } 
+        // JOUEUR HUMAIN
+        // Gestion des actions du joueur humain
         else if (plateau.aQuiLeTour().isHumain() && e.getSource() != ihm.getBoutonJoueurAuto()) {
-            // calcul des coordonnées du Coup en fonction du bouton sélectionné sur l'interface
+            // Calcul des coordonnées du Coup en fonction du bouton sélectionné sur l'interface.
             JButton jtemp = ((JButton) (e.getSource()));
             int largeur = jtemp.getSize().width;
             int hauteur = jtemp.getSize().height;
             int clickCoordY = jtemp.getX() / largeur + 1;
-            int clickCoordX = jtemp.getY() / hauteur + 1;
-            Coup coup = new Coup(clickCoordX - 1, clickCoordY - 1);
-            // gestion des actions du joueur humain: 
-            // affichage du coup demandé par le joueur humain si celui-ci est valide et retournement des pions du plateau (sinon, affichage message d'erreur)
-            // TO DO	
+            int clickCoordX = jtemp.getY() / hauteur + 1;            
+            Coup coup = new Coup(clickCoordX - 1, clickCoordY - 1);            
+             
+            // Si le coup demandé par le joueur humain est valide.
+            if(plateau.coupDemande(coup))
+            {
+                // Affichage de celui-ci.
+                plateau.setValue(coup.getLigne(), coup.getColonne(), plateau.aQuiLeTour().getCouleur());
+                // Retournement des pions du plateau.
+                    // TODO
+                // Changement de joueur
+                ihm.setTour();
+            }
+            // Sinon, affichage message d'erreur
+            else
+            {
+                afficheMessageErreur("Ce coup n'est pas valide.");
+            }
         }
     }
 

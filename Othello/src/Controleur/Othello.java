@@ -40,7 +40,6 @@ public class Othello {
         //création de l'IHM du plateau
         InterfaceOthello ihm = new InterfaceOthello(plateau, isJoueurAuto);
         ihm.setScore();
-        ihm.setTour();
 
         // création du controlleur
         ControleurOthello controlleur = new ControleurOthello(plateau, joueur1, joueur2, ihm);
