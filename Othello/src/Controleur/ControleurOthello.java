@@ -14,6 +14,8 @@ import Modele.Coup;
 import Modele.Joueur;
 import Modele.Plateau;
 import Vue.InterfaceOthello;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Controleur de l'application réceptionnant les événements de l'interface et
@@ -55,37 +57,38 @@ public class ControleurOthello implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
         if (e.getSource() == ihm.getBoutonReset()) {
-            // TODO
-            // réinitialisation de la partie
+            // Réinitialisation de la partie
+            this.plateau.reset();
 
-        } else // JOUEUR AUTOMATIQUE
-        {
-            if (e.getSource() == ihm.getBoutonJoueurAuto() && plateau.aQuiLeTour().isAutomate()) {	// gestion des actions du joueur automatique: 
-                // 1ère sollicitation : affichage des coups possibles (avec pions de type HIGHLIGHT)
-                // 2ème sollicitation : affichage du coup demandé par le joueur automatique et retournement des pions du plateau si le coup demandé est valide,
-                // sinon, affichage message d'erreur
+        } // JOUEUR BOT
+        else if (e.getSource() == ihm.getBoutonJoueurAuto() && plateau.aQuiLeTour().isAutomate()) {
+            // Gestion des actions du joueur automatique : 
+            // 1ère sollicitation : Affichage des coups possibles (avec pions de type HIGHLIGHT)
+            ArrayList<Coup> coupsPossibles = plateau.aQuiLeTour().getListeCoupsPossibles();
+            for (Iterator<Coup> i = coupsPossibles.iterator(); i.hasNext();) {
+                Coup unCoup = i.next();
+                plateau.setValue(unCoup.getLigne(), unCoup.getColonne(), Couleur.HIGHLIGHT);
+            }
+            // 2ème sollicitation : affichage du coup demandé par le joueur automatique et retournement des pions du plateau si le coup demandé est valide,
+            // sinon, affichage message d'erreur
 
-                // TO DO
-                // exemple :
-                Coup coup = plateau.aQuiLeTour().joue();
-                plateau.setValue(coup.getLigne(), coup.getColonne(), Couleur.NOIR);
-
-            } else // JOUEUR HUMAIN
-             if (plateau.aQuiLeTour().isHumain() && e.getSource() != ihm.getBoutonJoueurAuto()) {
-                    // calcul des coordonnées du Coup en fonction du bouton sélectionné sur l'interface
-                    JButton jtemp = ((JButton) (e.getSource()));
-                    int largeur = jtemp.getSize().width;
-                    int hauteur = jtemp.getSize().height;
-                    int clickCoordY = jtemp.getX() / largeur + 1;
-                    int clickCoordX = jtemp.getY() / hauteur + 1;
-                    Coup coup = new Coup(clickCoordX - 1, clickCoordY - 1);
-
-                    // gestion des actions du joueur humain: 
-                    // affichage du coup demandé par le joueur humain si celui-ci est valide et retournement des pions du plateau (sinon, affichage message d'erreur)
-                    // TO DO	
-                }null
+            // TO DO
+            // exemple :
+//            Coup coup = plateau.aQuiLeTour().joue();
+//            plateau.setValue(coup.getLigne(), coup.getColonne(), Couleur.NOIR);
+        } // JOUEUR HUMAIN
+        else if (plateau.aQuiLeTour().isHumain() && e.getSource() != ihm.getBoutonJoueurAuto()) {
+            // calcul des coordonnées du Coup en fonction du bouton sélectionné sur l'interface
+            JButton jtemp = ((JButton) (e.getSource()));
+            int largeur = jtemp.getSize().width;
+            int hauteur = jtemp.getSize().height;
+            int clickCoordY = jtemp.getX() / largeur + 1;
+            int clickCoordX = jtemp.getY() / hauteur + 1;
+            Coup coup = new Coup(clickCoordX - 1, clickCoordY - 1);
+            // gestion des actions du joueur humain: 
+            // affichage du coup demandé par le joueur humain si celui-ci est valide et retournement des pions du plateau (sinon, affichage message d'erreur)
+            // TO DO	
         }
-
     }
 
     /**

@@ -126,13 +126,14 @@ public class Plateau extends Observable {
                 plateau[i][j] = Couleur.VIDE;
             }
         }
-        int milieu = dim / 2;
-        plateau[milieu - 1][milieu - 1] = Couleur.BLANC;
+        int milieu = dim / 2;        
+     
+        plateau[milieu - 1][milieu - 1] = Couleur.BLANC;    
         plateau[milieu][milieu] = Couleur.BLANC;
 
         plateau[milieu][milieu - 1] = Couleur.NOIR;
-        plateau[milieu - 1][milieu] = Couleur.NOIR;
-
+        plateau[milieu - 1][milieu] = Couleur.NOIR;     
+        
         nbblancs = 2;
         nbnoirs = 2;
 
@@ -176,7 +177,7 @@ public class Plateau extends Observable {
      * @return boolean
      */
     public boolean coupDemande(Coup coup) {
-        // TODO
+        // joueurActif.getListeCoupsPossibles();
         return true;
     }
 

@@ -12,7 +12,7 @@ import Modele.arbre.Tree;
 public class Joueur {
 
     private Couleur maCouleur;
-    private int couleurAdverse;
+    private Couleur couleurAdverse;
     private TypeJoueur monType;
     private Plateau plateau;
     private int monNiveau;
@@ -33,10 +33,11 @@ public class Joueur {
     public Joueur(Couleur c, TypeJoueur t, Plateau p, int niv) // création d'un joueur de couleur donnée (NOIR ou BLANC) et de type donné (HUMAIN ou AUTOMATE)
     // jouant sur le plateau p.
     {
-        maCouleur = c;
-        plateau = p;
-        monType = t;
-        monNiveau = niv;
+        this.maCouleur = c;
+        this.couleurAdverse = Couleur.getCouleurOpposee(this.maCouleur);
+        this.plateau = p;
+        this.monType = t;
+        this.monNiveau = niv;
     }
 
     /**
@@ -100,20 +101,66 @@ public class Joueur {
      * @return ArrayList<Coup>
      */
     public ArrayList<Coup> getListeCoupsPossibles() {
+        // Initialisation de l'ArrayList à retourner
+        ArrayList<Coup> coupsPossibles = new ArrayList<>();
+        // On récupère la matrice qui représente le plateau.
         Couleur[][] matriceDuJeu = this.plateau.getMatrice();
-        int dimension;        
-        // TODO
-        return null;
+        // Puis ses dimension (i x j avec i = j)
+        int dimension = this.plateau.getDim();        
+        // On parcours les abscisses
+        for(int i = 0; i < dimension; i++)
+        {
+            // Puis les ordonnées
+            for(int j = 0; j < dimension; j++)
+            {
+                // Si la case parcourrue est la même que la couleur du joueur...
+                if(matriceDuJeu[i][j] == this.maCouleur)
+                { 
+                    // On fait un parcours des cases adjacentes.
+                    for(int translationHorizontale = -1; translationHorizontale < 2; translationHorizontale++)
+                    {
+                        for(int translationVerticale = -1; translationVerticale < 2; translationVerticale++)
+                        {
+                            // On regarde si un des cases adjacentes possède un pion de la couleur de mon adversaire.
+                            if(matriceDuJeu[i+translationHorizontale][j+translationVerticale] == this.couleurAdverse)
+                            {
+                                System.out.println("Pion adverse en : (" + (i + translationHorizontale) + ";" + (j + translationVerticale) + ")");
+                                // On cherche combien de pions on peux retourner.
+                                int pionRetournePossible = 1;
+                                int abscisse = i + translationHorizontale * (pionRetournePossible + 1);
+                                int ordonnee = j + translationVerticale   * (pionRetournePossible + 1);
+                                
+                                // On vérifie qu'on ne sors pas du tableau et que le coup à jouer est possible
+                                while (abscisse < 8 && abscisse > 0 && ordonnee < 8 && ordonnee > 0 && matriceDuJeu[abscisse][ordonnee] == this.couleurAdverse)
+                                {
+                                    pionRetournePossible++;
+                                    abscisse = i + translationHorizontale * (pionRetournePossible + 1);
+                                    ordonnee = j + translationVerticale   * (pionRetournePossible + 1);
+                                }
+                                
+                                if(abscisse < 8 && abscisse > 0 && ordonnee < 8 && ordonnee > 0 && matriceDuJeu[abscisse][ordonnee] == Couleur.VIDE)
+                                {
+                                    coupsPossibles.add(new Coup(abscisse, ordonnee));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return coupsPossibles;
     }
 
     /**
-     * calcul du meilleur coup à jouer
+     * Calcul du meilleur coup à jouer
      *
      * @return Coup
      */
     public Coup joue() {
         // TODO
-        // exemple : 
+        // exemple :    
+       
         Coup coup = new Coup(0, 0);
         return coup;
 
