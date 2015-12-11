@@ -155,17 +155,21 @@ public class Plateau extends Observable {
         Couleur lastCouleur = matrice[lig][col];
         matrice[lig][col] = couleur;
         //System.out.println("mise a jour du matrice en " + lig + " - " + col);
-        if (couleur == Couleur.BLANC) {
+        if (couleur == Couleur.BLANC) 
+        {
             nbblancs++;
-            if (lastCouleur == Couleur.NOIR) {
+            if (lastCouleur == Couleur.NOIR)
+            {
                 nbnoirs--;
             }
-        } else {
+        } 
+        else if(couleur == Couleur.NOIR) 
+        {
             nbnoirs++;
-            if (lastCouleur == Couleur.BLANC) {
+            if (lastCouleur == Couleur.BLANC)
+            {
                 nbblancs--;
             }
-
         }
         setChanged();
         notifyObservers();
@@ -204,23 +208,37 @@ public class Plateau extends Observable {
 
     /**
      * Changement du joueur actif en fonction des coups possibles.
-     * S'il n'y a plus de coups possibles, la fonction retourne null.
+     * Si le joueur en attente doit passer son tour, le joueur actif reste le même.
+     * S'il n'y a plus de coups possibles pour aucun des joueurs, la fonction retourne null.
      *
      * @return Joueur Le joueur qui va devoir jouer.
      */
-    public Joueur changeTourJoueur() {
+    public Joueur changeTourJoueur() {               
         // Si le prochain joueur peut jouer.
         if (joueurEnAttente.getListeCoupsPossibles().size() > 0)
         {
+            // Le tour n'est pas passé
+            this.passeSonTour = false;
+            
             // On échange les deux joueurs
-            Joueur tmp = joueurEnAttente;
-            joueurEnAttente = joueurActif;
-            joueurActif = tmp;
+            Joueur tmp = this.joueurEnAttente;
+            this.joueurEnAttente = this.joueurActif;
+            this.joueurActif = tmp;
 
-            return joueurActif;
+            return this.joueurActif;
         } 
-        else 
+        // Si le joueur actif peut jouer.
+        else if(joueurActif.getListeCoupsPossibles().size() > 0) 
         {
+            // Le joueur actif joue une deuxième fois.
+            this.passeSonTour = true;
+            
+            return joueurActif;
+        }
+        else
+        {
+            this.finDePartie = true;
+            
             return null;
         }
     }

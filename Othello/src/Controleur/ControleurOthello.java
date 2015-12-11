@@ -16,6 +16,7 @@ import Modele.Plateau;
 import Vue.InterfaceOthello;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.JOptionPane;
 
 /**
  * Controleur de l'application réceptionnant les événements de l'interface et
@@ -53,7 +54,22 @@ public class ControleurOthello implements ActionListener {
         ihm = vue;
         nombreDeClicBoutonAuto = 1;
     }
+    
+    /**
+     * Permet de réinitialiser une partie.
+     */
+    public void resetJeu() {
+        // Réinitialisation de la partie
+        this.plateau.reset();
+        this.nombreDeClicBoutonAuto = 1;
+        if(plateau.aQuiLeTour().getCouleur() == Couleur.BLANC)
+        {                
+            this.ihm.setTour();
+        }
 
+        this.ihm.setScore();
+    }
+    
     /**
      * Ecouteur du controleur et activation des actions associées
      */
@@ -63,10 +79,7 @@ public class ControleurOthello implements ActionListener {
         // Si clic sur le bouton Reset
         if (e.getSource() == ihm.getBoutonReset())
         {
-            // Réinitialisation de la partie
-            this.plateau.reset();
-            this.nombreDeClicBoutonAuto = 1;
-
+            this.resetJeu();
         } 
         // JOUEUR BOT
         // Gestion des actions du joueur automatique   
@@ -76,10 +89,10 @@ public class ControleurOthello implements ActionListener {
             if(nombreDeClicBoutonAuto == 1)
             {
                 ArrayList<Coup> coupsPossibles = plateau.aQuiLeTour().getListeCoupsPossibles();
-                for (Iterator<Coup> i = coupsPossibles.iterator(); i.hasNext();)
+                int nombreDeCoupsPossibles = coupsPossibles.size();
+                for (int i = 0; i < nombreDeCoupsPossibles; i++)
                 {
-                    Coup unCoup = i.next();
-                    plateau.setValue(unCoup.getLigne(), unCoup.getColonne(), Couleur.HIGHLIGHT);
+                    plateau.setValue(coupsPossibles.get(i).getLigne(), coupsPossibles.get(i).getColonne(), Couleur.HIGHLIGHT);
                 }
                 nombreDeClicBoutonAuto++;
             }
@@ -88,20 +101,27 @@ public class ControleurOthello implements ActionListener {
             {
                 // On enlève les highlight.
                 plateau.retirerHighlight();
+                
                 // Affichage du coup demandé par le joueur automatique  
                 Coup coupAleatoire = plateau.aQuiLeTour().joue();                
-                plateau.setValue(coupAleatoire.getLigne(), coupAleatoire.getColonne(), plateau.aQuiLeTour().getCouleur());                
+                plateau.setValue(coupAleatoire.getLigne(), coupAleatoire.getColonne(), plateau.aQuiLeTour().getCouleur());   
+                
                 // Retournement des pions du plateau si le coup demandé est valide
-                    // TODO
-                    
-                // Sinon, affichage d'un message d'erreur
-                    // TODO
+                ArrayList<Coup> aRetourner = plateau.aQuiLeTour().getListeCoupsARetourner(coupAleatoire);
+                int nombreDeRetournements = aRetourner.size();
+                for(int i = 0; i < nombreDeRetournements; i++)
+                {
+                    plateau.setValue(aRetourner.get(i).getLigne(), aRetourner.get(i).getColonne(), plateau.aQuiLeTour().getCouleur());
+                }
                     
                 // Reset de la boucle de clic.
                 nombreDeClicBoutonAuto = 1;
                 
+                // Affichage des scores
+                ihm.setScore(); 
+                
                 // Changement de joueur
-                ihm.setTour();
+                ihm.setTour();           
             }
         } 
         // JOUEUR HUMAIN
@@ -120,16 +140,31 @@ public class ControleurOthello implements ActionListener {
             {
                 // Affichage de celui-ci.
                 plateau.setValue(coup.getLigne(), coup.getColonne(), plateau.aQuiLeTour().getCouleur());
+                
                 // Retournement des pions du plateau.
-                    // TODO
+                ArrayList<Coup> aRetourner = plateau.aQuiLeTour().getListeCoupsARetourner(coup);
+                int nombreDeRetournements = aRetourner.size();
+                for(int i = 0; i < nombreDeRetournements; i++)
+                {
+                    plateau.setValue(aRetourner.get(i).getLigne(), aRetourner.get(i).getColonne(), plateau.aQuiLeTour().getCouleur());
+                }
+                
+                // Affichage des scores
+                ihm.setScore(); 
+                
                 // Changement de joueur
-                ihm.setTour();
+                ihm.setTour();                
             }
             // Sinon, affichage message d'erreur
             else
             {
                 afficheMessageErreur("Ce coup n'est pas valide.");
             }
+        }
+        
+        if(plateau.getFinDePartie())
+        {
+            this.resetJeu();
         }
     }
 
@@ -139,16 +174,8 @@ public class ControleurOthello implements ActionListener {
      * @param messageTexte message d'erreur
      */
     private void afficheMessageErreur(String messageTexte) {
-        JLabel message;
-
-        message = new JLabel(messageTexte);
-        JFrame frame = new JFrame("ERREUR");
-        frame.getContentPane().add(message, BorderLayout.NORTH);
-        frame.setPreferredSize(new Dimension(450, 80));
-        frame.setLocation(100, 100);
-        frame.setLocationRelativeTo(null);
-        frame.pack();
-        frame.setVisible(true);
+        
+        JOptionPane.showMessageDialog(ihm, messageTexte, "ERREUR", JOptionPane.ERROR_MESSAGE);
     }
 
 }

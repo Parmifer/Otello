@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import Modele.Couleur;
 import Modele.Joueur;
 import Modele.Plateau;
+import javax.swing.JOptionPane;
 
 /**
  * Interface graphique du jeu 
@@ -177,24 +178,54 @@ public class InterfaceOthello extends JFrame implements Observer {
         {
             Joueur prochainJoueur = plateau.changeTourJoueur();
             String couleurJoueurActif = (plateau.aQuiLeTour().getCouleur() == Couleur.NOIR) ? "NOIR" : "BLANC";
+            String couleurJoueurEnAttente = (plateau.aQuiLeTour().getCouleur() == Couleur.NOIR) ? "BLANC" : "NOIR";
             if(prochainJoueur == null)
             {
-                quiJoue.setText(couleurJoueurActif + " doit passer son tour.");
+                this.finDePartie();
+            }
+            else if (plateau.getPasseSonTour())
+            {
+                JOptionPane.showMessageDialog(this, couleurJoueurEnAttente + " doit passer son tour.", "Attention", JOptionPane.WARNING_MESSAGE);
             }
             else
             {
-                quiJoue.setText(couleurJoueurActif + " peux jouer.");
+                quiJoue.setText(couleurJoueurActif + " peux jouer.");                
             }
 	}
 	
 
 	/**
-	 * affichage de l'interface graphique de fin de partie avec le score et 
+	 * Affichage de l'interface graphique de fin de partie avec le score et 
 	 * le gagnant ou l'annonce de partie ex-aequo
 	 */
-	public void finDePartie(){
-			// TO DO
-
+	public void finDePartie()
+        {
+            String message;
+            int scoreBlanc, scoreNoir;
+            int nombreDeCases = plateau.getDim() * plateau.getDim();
+            int nombreDeBlancs = plateau.getNbBlancs();
+            int nombreDeNoirs = plateau.getNbNoirs();
+            
+            
+            if(nombreDeBlancs > nombreDeNoirs)
+            {
+                scoreNoir = nombreDeNoirs;
+                scoreBlanc = nombreDeCases - nombreDeNoirs;
+                message = "BLANC a gagné la partie !\nLe score est de " + scoreBlanc + " à " + scoreNoir + ".";                
+                
+            }
+            else if(nombreDeBlancs < nombreDeNoirs)
+            {
+                scoreBlanc = nombreDeBlancs;
+                scoreNoir = nombreDeCases - nombreDeBlancs;
+                message = "NOIR a gagné la partie !\nLe score est de " + scoreNoir + " à " + scoreBlanc + "."; 
+            }
+            else
+            {
+                message = "Le match est nul !\nLes deux joueurs sont ex-aequo.";
+            }
+            
+            JOptionPane.showMessageDialog(this, message, "Fin de la partie", JOptionPane.INFORMATION_MESSAGE);
 	}
 	/**
 	 * accesseur au bouton reset
