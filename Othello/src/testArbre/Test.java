@@ -109,7 +109,6 @@ public class Test {
         for (int i = 0; i < nombreDeFils; i++)
         {
             int miniVal = _miniVal(arbre.getFils(i));
-            // System.out.println("miniVal = " + miniVal);
             if(heuristique > miniVal)
             {
                 heuristique = miniVal;

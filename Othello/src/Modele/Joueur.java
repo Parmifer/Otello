@@ -152,9 +152,9 @@ public class Joueur {
      * @param unCoup Le coup qui vient d'être joué.
      * @return ArrayList<Coup> La liste des coups à retourner.
      */
-    public ArrayList<Coup> getListeCoupsARetourner(Coup unCoup) {
+    public ArrayList<Coup> getListePionsARetourner(Coup unCoup) {
         // Initialisation de l'ArrayList des coups.
-        ArrayList<Coup> coupsARetourner = new ArrayList<>();
+        ArrayList<Coup> pionsARetourner = new ArrayList<>();
         // On récupère la matrice qui représente le plateau.
         Couleur[][] matriceDuJeu = this.plateau.getMatrice();
         // Puis ses dimension.
@@ -166,14 +166,14 @@ public class Joueur {
         for (int translationHorizontale = -1; translationHorizontale < 2; translationHorizontale++) {
             for (int translationVerticale = -1; translationVerticale < 2; translationVerticale++) {
                 // Initialisation de l'ArrayList des coups.
-                ArrayList<Coup> coupsPotentielsARetourner = new ArrayList<>();
+                ArrayList<Coup> pionsPotentielsARetourner = new ArrayList<>();
 
                 // Test pour vérifier qu'on reste dans le cadre de la matrice.
                 if (ligne + translationHorizontale < dimension && ligne + translationHorizontale >= 0 && colonne + translationVerticale < dimension && colonne + translationVerticale >= 0) {
                     // On regarde si un des cases adjacentes possède un pion de la couleur de mon adversaire.
                     if (matriceDuJeu[ligne + translationHorizontale][colonne + translationVerticale] == this.couleurAdverse) {
                         // On retourne un premier pion.
-                        coupsPotentielsARetourner.add(new Coup(ligne + translationHorizontale, colonne + translationVerticale));
+                        pionsPotentielsARetourner.add(new Coup(ligne + translationHorizontale, colonne + translationVerticale));
 
                         // On cherche les autres pions qu'on peux retourner.
                         int pionRetournePossible = 1;
@@ -182,21 +182,21 @@ public class Joueur {
 
                         // On vérifie qu'on ne sors pas du tableau et que le coup à jouer est possible
                         while (abscisse < dimension && abscisse >= 0 && ordonnee < dimension && ordonnee >= 0 && matriceDuJeu[abscisse][ordonnee] == this.couleurAdverse) {
-                            coupsPotentielsARetourner.add(new Coup(abscisse, ordonnee));
+                            pionsPotentielsARetourner.add(new Coup(abscisse, ordonnee));
                             pionRetournePossible++;
                             abscisse = ligne + translationHorizontale * (pionRetournePossible + 1);
                             ordonnee = colonne + translationVerticale * (pionRetournePossible + 1);
                         }
 
                         if (abscisse < dimension && abscisse >= 0 && ordonnee < dimension && ordonnee >= 0 && matriceDuJeu[abscisse][ordonnee] == this.maCouleur) {
-                            coupsARetourner.addAll(coupsPotentielsARetourner);
+                            pionsARetourner.addAll(pionsPotentielsARetourner);
                         }
                     }
                 }
             }
         }
 
-        return coupsARetourner;
+        return pionsARetourner;
     }
 
     /**

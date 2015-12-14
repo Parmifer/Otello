@@ -93,7 +93,7 @@ public class InterfaceOthello extends JFrame implements Observer {
 			}
 		}
 	
-		quiJoue = new JLabel("NOIR peux jouer.");
+		quiJoue = new JLabel("C'est au tour de NOIR.");
 		menu.add(quiJoue);
 
 		if (isJoueurAutomatique)
@@ -189,7 +189,7 @@ public class InterfaceOthello extends JFrame implements Observer {
             }
             else
             {
-                quiJoue.setText(couleurJoueurActif + " peux jouer.");                
+                quiJoue.setText("C'est au tour de " + couleurJoueurActif + ".");                
             }
 	}
 	

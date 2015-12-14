@@ -79,6 +79,7 @@ public class ControleurOthello implements ActionListener {
         // Si clic sur le bouton Reset
         if (e.getSource() == ihm.getBoutonReset())
         {
+            // TODO : Ajouter une confirmation !
             this.resetJeu();
         } 
         // JOUEUR BOT
@@ -107,7 +108,7 @@ public class ControleurOthello implements ActionListener {
                 plateau.setValue(coupAleatoire.getLigne(), coupAleatoire.getColonne(), plateau.aQuiLeTour().getCouleur());   
                 
                 // Retournement des pions du plateau si le coup demandé est valide
-                ArrayList<Coup> aRetourner = plateau.aQuiLeTour().getListeCoupsARetourner(coupAleatoire);
+                ArrayList<Coup> aRetourner = plateau.aQuiLeTour().getListePionsARetourner(coupAleatoire);
                 int nombreDeRetournements = aRetourner.size();
                 for(int i = 0; i < nombreDeRetournements; i++)
                 {
@@ -142,7 +143,7 @@ public class ControleurOthello implements ActionListener {
                 plateau.setValue(coup.getLigne(), coup.getColonne(), plateau.aQuiLeTour().getCouleur());
                 
                 // Retournement des pions du plateau.
-                ArrayList<Coup> aRetourner = plateau.aQuiLeTour().getListeCoupsARetourner(coup);
+                ArrayList<Coup> aRetourner = plateau.aQuiLeTour().getListePionsARetourner(coup);
                 int nombreDeRetournements = aRetourner.size();
                 for(int i = 0; i < nombreDeRetournements; i++)
                 {
