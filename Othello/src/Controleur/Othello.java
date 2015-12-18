@@ -30,7 +30,7 @@ public class Othello {
         //déclaration des joueurs
         // Joueur joueur1 = new Joueur(Couleur.NOIR, TypeJoueur.AUTOMATE, plateau, NIVEAUMOYEN);
         Joueur joueur1 = new Joueur(Couleur.NOIR, TypeJoueur.AUTOMATE, plateau, NIVEAUEXPERT);
-        Joueur joueur2 = new Joueur(Couleur.BLANC, TypeJoueur.HUMAIN, plateau, NIVEAUDEBUTANT);
+        Joueur joueur2 = new Joueur(Couleur.BLANC, TypeJoueur.AUTOMATE, plateau, NIVEAUMOYEN);
 
         // définition du joueur qui débute (pions noirs, conventionnellement)
         plateau.setJoueurActif(joueur1, joueur2);
