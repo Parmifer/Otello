@@ -10,7 +10,7 @@ import java.util.Observable;
  * retournement des pions (5) la détection de la fin de partie (aucun des 2
  * joueurs ne peut jouer) (6) le calcul du joueur actif
  *
- * @author courbis
+ * @author Mme Courbis - Yann Butscher - Lucile Decrozant-Triquenaux
  *
  */
 public class Plateau extends Observable {

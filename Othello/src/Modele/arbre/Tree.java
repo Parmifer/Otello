@@ -8,15 +8,14 @@ import java.util.ArrayList;
  *
  * @author Anne-lise Courbis - Yann Butscher - Lucile Decrozant-Triquenaux
  *
- * @param <T> Fixé lors de la création de l'arbre, contenu de chaque noeud de l'arbre
+ * @param <T> Fixé lors de la création de l'arbre, contenu de chaque noeud de
+ * l'arbre
  */
 public class Tree<T extends Heuristiquable> {
 
     private T _racine;
     private ArrayList<Tree<T>> _fils;
     private Tree<T> _pere;
-    private int _largeur;
-    private int _profondeur;
 
     /**
      * Crée d'un arbre vide
@@ -25,23 +24,17 @@ public class Tree<T extends Heuristiquable> {
         this._racine = null;
         this._pere = null;
         this._fils = new ArrayList<>();
-        this._largeur = 0;
-        this._profondeur = 0;
     }
 
     /**
      * Crée un arbre avec une racine donnée
      *
      * @param noeudRacine Racine de l'arbre
-     * @param profondeur Profondeur de l'arbre
-     * @param largeur Largeur de l'arbre
      */
-    public Tree(T noeudRacine, int profondeur, int largeur) {
+    public Tree(T noeudRacine) {
         this._racine = noeudRacine;
         this._pere = null;
         this._fils = new ArrayList<>();
-        this._largeur = largeur;
-        this._profondeur = profondeur;
     }
 
     /**
@@ -103,18 +96,11 @@ public class Tree<T extends Heuristiquable> {
         return this._fils.size();
     }
 
-    public int getLargeur() {
-        return _largeur;
-    }
-
-    public int getProfondeur() {
-        return _profondeur;
-    }
-
     /**
      * Renvoie l'heuristique de la racine de l'arbre courant.
      *
-     * @return int Une valeur numérique entière représentant la valeur d'un coup à jouer.
+     * @return int Une valeur numérique entière représentant la valeur d'un coup
+     * à jouer.
      */
     public int getHeuristique() {
         return this._racine.getHeuristique();
@@ -177,5 +163,55 @@ public class Tree<T extends Heuristiquable> {
                 }
             }
         } while (!noeudsReorganises.isEmpty());
+    }
+
+    private int _maxiVal(Tree<?> arbre) {
+        int heuristique = Integer.MIN_VALUE;
+
+        if (arbre.isFeuille()) {
+            heuristique = arbre.getHeuristique();
+        } else {
+            int nombreDeFils = arbre.getNbFils();
+            for (int i = 0; i < nombreDeFils; i++) {
+                heuristique = Math.max(heuristique, _miniVal(arbre.getFils(i)));
+            }
+        }
+
+        return heuristique;
+    }
+
+    private int _miniVal(Tree<?> arbre) {
+        int heuristique = Integer.MAX_VALUE;
+
+        if (arbre.isFeuille()) {
+            heuristique = arbre.getHeuristique();
+        } else {
+            int nombreDeFils = arbre.getNbFils();
+            for (int i = 0; i < nombreDeFils; i++) {
+                heuristique = Math.min(heuristique, _maxiVal(arbre.getFils(i)));
+            }
+        }
+
+        return heuristique;
+    }
+
+    public Tree<?> minMax() {
+        int heuristique = Integer.MIN_VALUE;
+        int indexFils = 0;
+
+        int nombreDeFils = this.getNbFils();
+        for (int i = 0; i < nombreDeFils; i++) {
+            int miniVal = _miniVal(this.getFils(i));
+            if (heuristique > miniVal) {
+                heuristique = miniVal;
+                indexFils = i;
+            }
+        }
+
+        Tree<?> noeudARetourner;
+
+        noeudARetourner = this.getFils(indexFils);
+
+        return noeudARetourner;
     }
 }

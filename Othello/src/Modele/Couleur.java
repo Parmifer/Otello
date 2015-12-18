@@ -21,5 +21,4 @@ public enum Couleur {
             return Couleur.HIGHLIGHT;
         }
     }
-
 };

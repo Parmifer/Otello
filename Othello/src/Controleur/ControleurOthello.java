@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
  * Controleur de l'application réceptionnant les événements de l'interface et
  * activant les méthodes adéquates du modèle
  *
- * @author courbis
+ * @author Mme Courbis - Yann Butscher - Lucile Decrozant-Triquenaux
  *
  */
 public class ControleurOthello implements ActionListener {

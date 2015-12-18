@@ -68,61 +68,8 @@ public class Test {
         monArbre5.deepthSearch();
         System.out.println("-----     minMax()   ------");
         System.out.println("---- Résultat obtenu ------");
-        minMax(monArbre5);       
-    }
-
-    private static int _maxiVal(Tree<Info> arbre) {
-        int heuristique = Integer.MIN_VALUE;
-
-        if (arbre.isFeuille()) {
-            heuristique = arbre.getRacine().getValue();
-        } else {
-            int nombreDeFils = arbre.getNbFils();
-            for (int i = 0; i < nombreDeFils; i++) {
-                heuristique = Math.max(heuristique, _miniVal(arbre.getFils(i)));
-            }
-        }
-
-        return heuristique;
-    }
-
-    private static int _miniVal(Tree<Info> arbre) {
-        int heuristique = Integer.MAX_VALUE;
-
-        if (arbre.isFeuille()) {
-            heuristique = arbre.getRacine().getValue();
-        } else {
-            int nombreDeFils = arbre.getNbFils();
-            for (int i = 0; i < nombreDeFils; i++) {
-                heuristique = Math.min(heuristique, _maxiVal(arbre.getFils(i)));
-            }
-        }
-
-        return heuristique;
-    }
-
-    public static Tree<Info> minMax(Tree<Info> arbre) {
-        int heuristique = Integer.MIN_VALUE;
-        int indexFils = 0;
-
-        int nombreDeFils = arbre.getNbFils();
-        for (int i = 0; i < nombreDeFils; i++)
-        {
-            int miniVal = _miniVal(arbre.getFils(i));
-            if(heuristique > miniVal)
-            {
-                heuristique = miniVal;
-                indexFils = i;
-            }            
-        }
-
-        Tree<Info> noeudARetourner;
-
-        noeudARetourner = arbre.getFils(indexFils);
-        noeudARetourner.getRacine().imprim();
-
-        return noeudARetourner;
-    }
+        System.out.println(monArbre5.minMax().getHeuristique());       
+    }    
 
     /**
      * Génère un arbre à partir de la racine
@@ -138,7 +85,7 @@ public class Test {
         } else {
             // On génère la racine.
             Info racine = new Info(1);
-            Tree<Info> arbreRacine = new Tree<>(racine, profondeur, largeur);
+            Tree<Info> arbreRacine = new Tree<>(racine);
 
             // Si la profondeur est supérieure à 1, on va créer des fils à l'arbre
             if (profondeur > 1) {
@@ -164,7 +111,7 @@ public class Test {
             // On génère la racine à partir d'un nombre aléatoire
             int nombreAleatoire = Test.minPrises + (int) (Math.random() * ((Test.maxPrises - Test.minPrises) + Test.minPrises));
             Info racine = new Info(nombreAleatoire);
-            Tree<Info> arbreRacine = new Tree<>(racine, profondeur, largeur);
+            Tree<Info> arbreRacine = new Tree<>(racine);
 
             // Si la profondeur est supérieure à 1, on va créer des fils à l'arbre
             if (profondeur > 1) {

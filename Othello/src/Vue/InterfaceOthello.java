@@ -21,7 +21,8 @@ import javax.swing.JOptionPane;
 /**
  * Interface graphique du jeu 
  * mise à jour lorsque le modèle (plateau + joueur) évolue
- * @author courbis
+ * 
+ * @author Mme Courbis - Yann Butscher - Lucile Decrozant-Triquenaux
  *
  */
 public class InterfaceOthello extends JFrame implements Observer {
